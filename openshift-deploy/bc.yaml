@@ -26,9 +26,7 @@ spec:
     contextDir: tools/kubernetes-twistlock-controller
     git:
       ref: master
-      uri: https://tfs-prod.service.raiffeisen.ch:8081/tfs/RCH/AP.JEPGIT/_git/ocp_security
-    sourceSecret:
-      name: rch-git-basic-auth
+      uri: https://github.com/mdnix/openshift-twistlock-controller
     type: Git 
   strategy:
     sourceStrategy:

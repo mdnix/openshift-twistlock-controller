@@ -68,11 +68,6 @@ This will create a StatefulSet (3 replicas), Service and PersistentVolumeClaims/
 oc create -f is-controller.yaml -n mgt-infra-controllers
 ```
 
-### Add Git Source Secret
-```bash
-oc create source-secret.yaml -n mgt-infra-controllers
-```
-
 ### Add Twistlock Secret
 ```bash
 oc create twistlock-secret.yaml -n mgt-infra-controllers
@@ -101,7 +96,7 @@ oc start-build kubernetes-twistlock-controller --follow -n mgt-infra-controllers
 As soon as the build is done a new Deployment of the image will be rolled out due to ImageChange Triggers.
 
 ### Controller internals
-![alt text](https://tfs-prod.service.raiffeisen.ch:8081/tfs/RCH/87c91262-4a39-419e-93de-93b48f0f3d84/_apis/git/repositories/417f93a8-48d9-4309-af3b-fdef7ce71fe1/Items?path=%2Ftools%2Fkubernetes-twistlock-controller%2Fdrawing%2Farchitecture.jpeg&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&download=false&resolveLfs=true&%24format=octetStream&api-version=5.0-preview.1)
+![alt text](https://raw.githubusercontent.com/mdnix/openshift-twistlock-controller/master/drawing/architecture.jpeg)
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
