@@ -1,0 +1,12 @@
+resources:
+  pod: false
+  deployment: false
+  replicationcontroller: false
+  replicaset: false
+  daemonset: false
+  services: false
+  secret: false
+  configmap: false
+  rolebinding: true
+handler:
+  name: Twistlock

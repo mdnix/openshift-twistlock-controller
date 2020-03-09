@@ -1,0 +1,43 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  creationTimestamp: null
+  labels:
+    app: kubernetes-twistlock-controller
+    build: kubernetes-twistlock-controller
+  name: kubernetes-twistlock-controller
+spec:
+  nodeSelector: 
+    purpose: 'app'
+  output:
+    to:
+      kind: ImageStreamTag
+      name: kubernetes-twistlock-controller:latest
+  postCommit: {}
+  resources:
+    limits:
+      cpu: "1"
+      memory: 1024M
+    requests:
+      cpu: 100m
+      memory: 512M
+  runPolicy: Serial
+  source:
+    contextDir: tools/kubernetes-twistlock-controller
+    git:
+      ref: master
+      uri: https://tfs-prod.service.raiffeisen.ch:8081/tfs/RCH/AP.JEPGIT/_git/ocp_security
+    sourceSecret:
+      name: rch-git-basic-auth
+    type: Git 
+  strategy:
+    sourceStrategy:
+      env:
+      - name: GOPROXY
+        value: http://nexus-tst.essd.ch:8081/repository/go-group/
+      from:
+        kind: ImageStreamTag
+        name: go-toolset-rhel7:1.12
+    type: Source
+  triggers: []
+

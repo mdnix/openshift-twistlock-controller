@@ -1,0 +1,29 @@
+{
+    "name": "{{ .CN }}",
+     "color": "#ff0000",
+     "description": "",
+     "images": [
+       "*"
+     ],
+     "containers": [
+       "*"
+     ],
+     "hosts": [
+       "*"
+     ],
+     "labels": [
+       "*"
+     ],
+     "services": [
+       "*"
+     ],
+     "functions": [
+       "*"
+     ],
+     "namespaces": [
+       "{{ .Namespace }}"
+     ],
+     "appIDs": [
+       "*"
+     ]
+ }

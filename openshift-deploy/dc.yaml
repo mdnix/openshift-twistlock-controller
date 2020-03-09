@@ -1,0 +1,97 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  generation: 1
+  labels:
+    app: kubernetes-twistlock-controller
+  name: kubernetes-twistlock-controller
+spec:
+  replicas: 3
+  revisionHistoryLimit: 10
+  selector:
+    app: kubernetes-twistlock-controller
+    deploymentconfig: kubernetes-twistlock-controller
+  strategy:
+    activeDeadlineSeconds: 21600
+    resources: {}
+    rollingParams:
+      intervalSeconds: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
+      timeoutSeconds: 600
+      updatePeriodSeconds: 1
+    type: Rolling
+  template:
+    metadata:
+      labels:
+        app: kubernetes-twistlock-controller
+        deploymentconfig: kubernetes-twistlock-controller
+    spec:
+      containers:
+      - env:
+        - name: CONFIG_PATH
+          value: /opt/app-root
+        - name: TWISTLOCK_USER
+          valueFrom:
+            secretKeyRef:
+              key: user
+              name: twistlock-credentials
+        - name: TWISTLOCK_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: twistlock-credentials
+        - name: TWISTLOCK_HOST
+          valueFrom:
+            secretKeyRef:
+              key: host
+              name: twistlock-credentials
+        - name: ETCD_CONN_0
+          value: etcd-0.etcd.mgt-infra-controllers:2379
+        - name: ETCD_CONN_1
+          value: etcd-1.etcd.mgt-infra-controllers:2379
+        - name: ETCD_CONN_2
+          value: etcd-2.etcd.mgt-infra-controllers:2379
+        image: docker-registry.default.svc:5000/mgt-infra-controllers/kubernetes-twistlock-controller@sha256:a6e4bb075717a39340d3bb7dfa6af7ef53996465e97ab3d83558d3288ab05c0c
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /health
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 3
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        name: kubernetes-twistlock-controller
+        resources:
+          limits:
+            cpu: 200m
+            memory: 512M
+          requests:
+            cpu: 100m
+            memory: 256M
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      nodeSelector:
+        node-role.kubernetes.io/infra: "true"
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: twistlock-cluster-reader
+      serviceAccountName: twistlock-cluster-reader
+      terminationGracePeriodSeconds: 30
+  test: false
+  triggers:
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - kubernetes-twistlock-controller
+      from:
+        kind: ImageStreamTag
+        name: kubernetes-twistlock-controller:latest
+        namespace: mgt-infra-controllers
+    type: ImageChange
+  - type: ConfigChange

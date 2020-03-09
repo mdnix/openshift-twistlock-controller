@@ -1,0 +1,15 @@
+{
+    "groupName": "{{ .CN }}",
+    "user": [],
+    "ldapGroup": true,
+    "samlGroup": false,
+    "role": "{{ .Role }}",
+    "_id": "{{ .CN }}",
+    "projects": [],
+    "groupId": "",
+    "collections": [
+      {{ if eq .Role "devOps" }}
+      "{{ .CN }}"
+      {{ end }}
+    ]
+}

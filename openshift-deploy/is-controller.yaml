@@ -1,0 +1,10 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  creationTimestamp: null
+  name: kubernetes-twistlock-controller
+spec:
+  lookupPolicy:
+    local: false
+status:
+  dockerImageRepository: ""
